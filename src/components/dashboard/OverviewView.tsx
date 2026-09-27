@@ -55,6 +55,7 @@ interface OverviewViewProps {
   onSelectBuilding: (building: Building) => void;
   isSimulating: boolean;
   onToggleSimulation: () => void;
+  onOpenAiWithPrompt?: (prompt?: string) => void;
 }
 
 const miniEnergyData = [
@@ -78,6 +79,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   onSelectBuilding,
   isSimulating,
   onToggleSimulation,
+  onOpenAiWithPrompt,
 }) => {
   const healthScore = campusService.getCampusHealth();
   const sensors = campusService.getSensors();
@@ -534,6 +536,95 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
           );
         })}
+      </div>
+
+      {/* AI CAMPUS BRIEF CARD (Requirement 19) */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-[#EFF6FF]/70 border border-[#BFDBFE] shadow-xs relative overflow-hidden space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#DBEAFE] pb-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#2563EB] text-white shadow-2xs">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold text-[#2563EB] uppercase tracking-wider bg-blue-100/70 px-2 py-0.5 rounded-full font-mono">
+                  CITYOS AI
+                </span>
+                <span className="text-xs text-[#64748B]">·</span>
+                <span className="text-xs text-[#16A34A] font-semibold flex items-center gap-1 font-mono">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
+                  Campus Brief
+                </span>
+              </div>
+              <h2 className="text-base font-bold text-[#1E293B] mt-0.5">
+                Executive Operations Intelligence
+              </h2>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onOpenAiWithPrompt?.("Summarize today's campus status")}
+              className="px-3.5 py-1.5 rounded-xl bg-[#2563EB] hover:bg-[#1E40AF] text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Ask CITYOS AI</span>
+            </button>
+            <button
+              onClick={() => onNavigateToTab('insights')}
+              className="px-3.5 py-1.5 rounded-xl bg-[#FFFFFF] border border-[#BFDBFE] hover:bg-blue-50 text-[#2563EB] text-xs font-semibold transition-colors cursor-pointer"
+            >
+              View AI Insights
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div className="lg:col-span-8 space-y-2 text-xs text-[#1E293B]">
+            <p className="font-semibold text-sm text-[#1E293B]">
+              "Campus operations are mostly stable."
+            </p>
+            <div className="text-[#64748B] space-y-1">
+              <span className="font-semibold text-[#1E293B] block">2 areas require attention:</span>
+              <div className="flex items-center gap-2 text-[#B45309]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
+                <span>• <strong>Air Quality — Zone B:</strong> Sensor indicates 77 AQI (exceeds preferred 65 baseline).</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#DC2626]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626]" />
+                <span>• <strong>Hydraulic Pressure — Building C / Hostel A:</strong> Riser pressure down to 18.2 PSI (nominal 54 PSI).</span>
+              </div>
+            </div>
+            <p className="text-[#64748B] pt-1">
+              Energy demand is trending upward by <strong>9.6%</strong> during peak afternoon laboratory sessions.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 p-3.5 rounded-xl bg-[#FFFFFF] border border-[#BFDBFE] flex flex-col justify-between space-y-2">
+            <div>
+              <span className="text-[10px] uppercase font-bold text-[#2563EB] block">Recommended Action</span>
+              <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                Review environmental conditions and high-consumption zones.
+              </p>
+            </div>
+            <div className="flex items-center justify-between pt-2 border-t border-[#E2E8F0]">
+              <button
+                onClick={() => onOpenAiWithPrompt?.("Why is the AQI showing a warning?")}
+                className="text-xs font-semibold text-[#2563EB] hover:text-[#1E40AF] flex items-center gap-1 cursor-pointer"
+              >
+                <span>Investigate AQI</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => onOpenAiWithPrompt?.("Which building is consuming the most electricity?")}
+                className="text-xs font-semibold text-[#2563EB] hover:text-[#1E40AF] flex items-center gap-1 cursor-pointer"
+              >
+                <span>Audit Energy</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* AI INSIGHTS: Visually attractive section directly below telemetry cards */}

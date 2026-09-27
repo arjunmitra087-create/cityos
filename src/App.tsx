@@ -28,6 +28,7 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState<ViewTab>('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [aiInitialPrompt, setAiInitialPrompt] = useState<string | undefined>(undefined);
   const [selectedBuilding, setSelectedBuilding] = useState<Building | null>(null);
 
   // Reactive state from campusService
@@ -71,6 +72,11 @@ export default function App() {
     setAppMode('dashboard');
   };
 
+  const handleOpenAi = (prompt?: string) => {
+    setAiInitialPrompt(prompt);
+    setIsAiModalOpen(true);
+  };
+
   // If in landing view
   if (appMode === 'landing') {
     return (
@@ -81,14 +87,23 @@ export default function App() {
         />
         {/* Floating Ask AI Button also accessible from landing page */}
         <button
-          onClick={() => setIsAiModalOpen(true)}
+          onClick={() => handleOpenAi()}
           className="fixed bottom-6 right-6 z-40 px-4 py-2.5 rounded-full bg-[#2563EB] hover:bg-[#1E40AF] text-white font-semibold shadow-md shadow-blue-600/20 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 cursor-pointer group"
           aria-label="Ask CITYOS AI Assistant"
         >
           <Sparkles className="w-4 h-4 text-white group-hover:rotate-12 transition-transform duration-300" />
           <span className="text-xs font-bold">Ask CITYOS AI</span>
         </button>
-        <AiAssistantModal isOpen={isAiModalOpen} onClose={() => setIsAiModalOpen(false)} />
+        <AiAssistantModal 
+          isOpen={isAiModalOpen} 
+          onClose={() => {
+            setIsAiModalOpen(false);
+            setAiInitialPrompt(undefined);
+          }} 
+          onNavigateToTab={(tab) => setCurrentTab(tab)}
+          onSelectBuilding={(b) => setSelectedBuilding(b)}
+          initialPrompt={aiInitialPrompt}
+        />
       </div>
     );
   }
@@ -221,6 +236,7 @@ export default function App() {
             onSelectBuilding={(b) => setSelectedBuilding(b)}
             isSimulating={isSimulating}
             onToggleSimulation={handleToggleSimulation}
+            onOpenAiWithPrompt={handleOpenAi}
           />
         );
     }
@@ -233,7 +249,7 @@ export default function App() {
       {/* Top Navbar adhering to Top Bar contract */}
       <Navbar
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        onOpenAiAssistant={() => setIsAiModalOpen(true)}
+        onOpenAiAssistant={() => handleOpenAi()}
         onLogout={() => setAppMode('landing')}
         alerts={alerts}
         onNavigateToTab={(tab) => setCurrentTab(tab)}
@@ -258,7 +274,7 @@ export default function App() {
 
       {/* Floating Global AI Assistant Trigger */}
       <button
-        onClick={() => setIsAiModalOpen(true)}
+        onClick={() => handleOpenAi()}
         className="fixed bottom-6 right-6 z-40 px-4 py-2.5 rounded-full bg-[#2563EB] hover:bg-[#1E40AF] text-white font-semibold shadow-md shadow-blue-600/20 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 group cursor-pointer"
         aria-label="Open Ask CITYOS AI"
       >
@@ -269,7 +285,13 @@ export default function App() {
       {/* AI Assistant Slide-over Modal */}
       <AiAssistantModal
         isOpen={isAiModalOpen}
-        onClose={() => setIsAiModalOpen(false)}
+        onClose={() => {
+          setIsAiModalOpen(false);
+          setAiInitialPrompt(undefined);
+        }}
+        onNavigateToTab={(tab) => setCurrentTab(tab)}
+        onSelectBuilding={(b) => setSelectedBuilding(b)}
+        initialPrompt={aiInitialPrompt}
       />
 
       {/* Global Building Telemetry Inspector Drawer */}
