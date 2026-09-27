@@ -1,0 +1,6 @@
+{
+  "name": "CITYOS — Intelligent Campus Operating System",
+  "description": "AI & IoT-powered smart campus operating system providing digital twin visualization, real-time telemetry, predictive analytics, and automated facility optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
