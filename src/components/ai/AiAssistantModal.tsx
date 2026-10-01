@@ -88,13 +88,13 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         {
           id: 'welcome-msg',
           sender: 'ai',
-          text: "Welcome to **CITYOS AI**, your intelligent campus operations assistant.\n\nI monitor **248 edge telemetry streams**, analyze real-time resource loads, detect anomalies, and predict facility demands across North Apex Campus. How can I assist you with campus operations today?",
+          text: "Welcome to **CITYOS AI**, your intelligent campus operations assistant.\n\nI monitor edge telemetry streams across 12 facilities, analyze real-time resource loads, detect anomalies, and predict facility demands. How can I assist you with campus operations today?",
           timestamp: 'Just now',
           responseObj: {
             text: '',
             badges: [
               { label: 'Campus Status', value: 'Operational', status: 'nominal' },
-              { label: 'IoT Mesh', value: '248 Online' },
+              { label: 'IoT Mesh', value: 'Online' },
               { label: 'Occupancy', value: `${kpis.crowd.peakOccupancyPct}%` },
             ],
             actions: [

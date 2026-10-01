@@ -269,6 +269,7 @@ class CampusService {
   // --- REALISTIC SMOOTH SIMULATION (PART 14) ---
   // Small micro-fluctuations (180 -> 183 -> 185 -> 184)
   private startSimulation(): void {
+    if (typeof window === 'undefined') return;
     if (this.simulationInterval) clearInterval(this.simulationInterval);
 
     this.simulationInterval = window.setInterval(() => {

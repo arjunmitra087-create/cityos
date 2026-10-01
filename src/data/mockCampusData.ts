@@ -79,7 +79,7 @@ export const INITIAL_BUILDINGS: Building[] = [
     color: '#06B6D4',
     aiPrediction: 'Energy consumption may increase by 18% between 2 PM and 5 PM due to distributed GPU cluster training.',
     recommendedAction: 'Inspect Block B HVAC compressor loop #2 and server lab cooling systems.',
-    sensorsCount: 34,
+    sensorsCount: 32,
     lastUpdated: 'Just now',
   },
   {
@@ -104,7 +104,7 @@ export const INITIAL_BUILDINGS: Building[] = [
     color: '#10B981',
     aiPrediction: 'Exhaust hoods in cleanroom 4 running with nominal air change rate (12 ACH).',
     recommendedAction: 'Schedule off-peak airflow ramp-down at 20:00.',
-    sensorsCount: 30,
+    sensorsCount: 28,
     lastUpdated: '2 mins ago',
   },
   {
@@ -204,7 +204,7 @@ export const INITIAL_BUILDINGS: Building[] = [
     color: '#14B8A6',
     aiPrediction: 'Indoor pool filtration cycle scheduled for 23:00 off-peak power window.',
     recommendedAction: 'Verify chemical balance probes on water recirculation loop B.',
-    sensorsCount: 15,
+    sensorsCount: 14,
     lastUpdated: '4 mins ago',
   },
   {
@@ -279,7 +279,7 @@ export const INITIAL_BUILDINGS: Building[] = [
     color: '#F97316',
     aiPrediction: 'Wind tunnel aerodynamic trials draw stabilized within allotted microgrid quota.',
     recommendedAction: 'Maintain current submeter load limits.',
-    sensorsCount: 19,
+    sensorsCount: 18,
     lastUpdated: '1 min ago',
   },
   {
@@ -893,17 +893,17 @@ export function generate248Sensors(): Sensor[] {
 
   const buildingSensorsCount: Record<string, number> = {
     'b-main': 22,
-    'b-cs': 34,
-    'b-sci': 30,
+    'b-cs': 32,
+    'b-sci': 28,
     'b-lib': 20,
     'b-canteen': 18,
     'b-auditorium': 16,
-    'b-sports': 15,
+    'b-sports': 14,
     'b-hostel-a': 26,
     'b-hostel-b': 24,
-    'b-mech': 19,
+    'b-mech': 18,
     'b-parking': 14,
-    'b-utility': 16, // sum = 248
+    'b-utility': 16, // sum = 22+32+28+20+18+16+14+26+24+18+14+16 = 248
   };
 
   let globalId = 1;
@@ -924,7 +924,7 @@ export function generate248Sensors(): Sensor[] {
       else if (type === 'Parking') { val = Math.round(Math.random() * 50 + 10); unit = 'bays'; }
 
       const isWarning = (b.id === 'b-hostel-a' && type === 'Water' && i === 2) || (b.id === 'b-cs' && type === 'Energy' && i === 4);
-      const isOffline = (b.id === 'b-sports' && i === 7);
+      const isOffline = (b.id === 'b-sports' && i === 7) || (b.id === 'b-mech' && i === 5) || (b.id === 'b-sci' && i === 12) || (b.id === 'b-canteen' && i === 9);
 
       sensors.push({
         id: `SNS-${String(globalId).padStart(4, '0')}`,

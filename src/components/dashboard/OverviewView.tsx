@@ -435,7 +435,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </h2>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#16A34A] border border-emerald-200 text-xs font-semibold font-mono">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
-                248 Sensors Online
+                {onlineSensorsCount} / {sensors.length} Sensors Online
               </span>
             </div>
             <p className="text-xs text-[#64748B] leading-relaxed">
